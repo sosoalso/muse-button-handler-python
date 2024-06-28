@@ -6,7 +6,7 @@ from EventManager import EventManager
 
 
 # ---------------------------------------------------------------------------- #
-class Button(EventManager):
+class ButtonHandler(EventManager):
     """
     Represents a button that can handle push, release, hold, and repeat events.
 
