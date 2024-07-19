@@ -1,59 +1,53 @@
-from Logger import Logger
-
-logger = Logger(__name__).get_logger()
-
-
+# ---------------------------------------------------------------------------- #
 class EventManager:
-    """
-    A class that manages events and event handlers.
-
-    Attributes:
-        event_handlers (dict): A dictionary that maps event names to a list of event handlers.
-
-    Methods:
-        __init__(*initial_events_name_list): Initializes the EventManager with a list of initial event names.
-        add_event(name): Adds a new event to the EventManager.
-        remove_event(name): Removes an event from the EventManager.
-        add_event_handler(name, handler): Adds an event handler to an existing event.
-        remove_event_handler(name, handler): Removes an event handler from an existing event.
-        trigger_event(name, *args, **kwargs): Triggers an event by calling all its event handlers with the given arguments.
-    """
-
     def __init__(self, *initial_events_name_list):
         self.event_handlers = {event: [] for event in initial_events_name_list}
 
     def add_event(self, name):
+        # 새로운 이벤트 추가
         if name not in self.event_handlers:
             self.event_handlers[name] = []
         else:
-            logger.info(f"Event already exists: {name}")
+            # 이벤트 이름이 이미 존재하는 경우 로그 출력
+            print(f"Event already exists: {name}")
 
     def remove_event(self, name):
+        # 이벤트 제거
         try:
             del self.event_handlers[name]
         except KeyError:
-            logger.info(f"No such event: {name}")
+            # 이벤트가 존재하지 않는 경우 로그 출력
+            print(f"No such event: {name}")
 
     def add_event_handler(self, name, handler):
-        try:
+        # 특정 이벤트에 대한 핸들러 추가
+        if name not in self.event_handlers:
+            self.event_handlers[name] = [handler]
+        elif handler not in self.event_handlers[name]:
             self.event_handlers[name].append(handler)
-        except KeyError:
-            logger.info(f"No such event: {handler}")
+        else:
+            # 핸들러가 이미 등록되어 있는 경우 로그 출력
+            print(f"Handler already registered for event: {name}")
 
     def remove_event_handler(self, name, handler):
+        # 특정 이벤트의 핸들러 제거
         try:
             self.event_handlers[name].remove(handler)
         except ValueError:
-            logger.info(f"Handler not found for name: {handler}")
+            # 핸들러가 목록에 없는 경우 로그 출력
+            print(f"Handler not found for name: {handler}")
         except KeyError:
-            logger.info(f"No such event: {handler}")
+            # 이벤트가 존재하지 않는 경우 로그 출력
+            print(f"No such event: {handler}")
 
     def trigger_event(self, name, *args, **kwargs):
+        # 이벤트 발생 시 연결된 모든 핸들러 호출
         if name in self.event_handlers:
             for handler in self.event_handlers[name]:
                 handler(*args, **kwargs)
         else:
-            logger.info(f"No such event: {name}")
+            # 이벤트가 존재하지 않는 경우 로그 출력
+            print(f"No such event: {name}")
 
 
 # ---------------------------------------------------------------------------- #
