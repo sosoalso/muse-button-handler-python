@@ -1,6 +1,6 @@
 # 대충 사용법
 
-```
+```python
 # 넣고 싶은 액션 넣으면 됨... 잉
 
 button_handler = ButtonHandler()
